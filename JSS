@@ -1,0 +1,27 @@
+function getWeather() {
+  const apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+  const location = document.getElementById('locationInput').value;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const weatherInfo = document.getElementById('weatherInfo');
+      weatherInfo.innerHTML = `
+        <h2>${data.name}, ${data.sys.country}</h2>
+        <p>Weather: ${data.weather[0].main}</p>
+        <p>Description: ${data.weather[0].description}</p>
+        <p>Temperature: ${data.main.temp}°C</p>
+        <p>Humidity: ${data.main.humidity}%</p>
+        <p>Wind Speed: ${data.wind.speed} m/s</p>
+      `;
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
+}
